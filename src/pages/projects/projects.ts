@@ -1,65 +1,54 @@
 import { getRepositoryDetails } from "../../utils";
 
 export interface Project {
-  name: string;
-  demoLink: string;
-  tags?: string[],
-  description?: string;
-  postLink?: string;
-  demoLinkRel?: string;
-  [key: string]: any;
+	name: string;
+	repoLink: string;
+	tags?: string[];
+	description?: string;
+	postLink?: string;
+	demoLinkRel?: string;
+	[key: string]: any;
 }
 
 export const projects: Project[] = [
-  {
-    name: 'Devaradise.com',
-    description: 'A blog that sharing web development resources and tutorials',
-    demoLink: 'https://devaradise.com',
-    tags: ['Blog']
-  },
-  {
-    name: 'Sellercraft App',
-    description: 'An Ecommerce omnichannel platform in Southeast Asia',
-    demoLink: 'https://sellercraft.co',
-    demoLinkRel: 'nofollow noopener noreferrer',
-    tags: ['ECommerce', 'Saas']
-  },
-  {
-    name: 'Gaji.id App',
-    description: 'Payroll and HR Management Information System',
-    demoLink: 'https://sellercraft.co',
-    demoLinkRel: 'nofollow noopener noreferrer',
-    tags: ['HRIS', 'Saas']
-  },
-  {
-    ...(await getRepositoryDetails('devaradise/paradise-ui')),
-    name: 'Paradise UI',
-    demoLink: 'https://paradise-ui.com',
-    postLink: 'https://devaradise.com/how-i-build-paradise-ui-react-component-library/',
-    tags: ['React', 'UI Library']
-  },
-  {
-    ...(await getRepositoryDetails('syakirurahman/react-lab')),
-    name: 'React Lab',
-    demoLink: 'https://devaradise.com/lab/react/',
-    tags: ['React']
-  },
-  {
-    ...(await getRepositoryDetails('syakirurahman/pokemon-catcher')),
-    name: 'Pokemon Catcher',
-    demoLink: 'https://pokemon-catcher-18636.web.app/',
-    tags: ['Hobby']
-  },
-  {
-    ...(await getRepositoryDetails('syakirurahman/movie-nominations')),
-    name: 'Movie Nominations',
-    demoLink: 'https://movie-nominations-c21c3.web.app/',
-    tags: ['Hobby']
-  },
-  {
-    ...(await getRepositoryDetails('syakirurahman/organization-tree')),
-    name: 'Organization tree',
-    demoLink: 'https://organization-tree-2a446.web.app/',
-    tags: ['Hobby']
-  }
-]
+	{
+		name: "AES-Grinder",
+		description:
+			"Program based on an academic paper that attacks a reduced AES",
+		repoLink: "https://github.com/defaultmodel/aes-grinder",
+		tags: ["Rust", "Crypto", "AES"],
+	},
+	{
+		name: "Sexion d'assaut",
+		description:
+			"A tool that can statically inject mallicious code in an ELF program",
+		repoLink: "https://github.com/defaultmodel/sexion-dassaut",
+		tags: ["C", "ELF", "Static injection"],
+	},
+	{
+		name: "Canvas Defender bypass",
+		description:
+			"A bypass of the protection offered by the Canvas Defender extension",
+		repoLink: "https://github.com/defaultmodel/canvas-defender-bypass",
+		tags: ["Web extension", "Python"],
+	},
+	{
+		name: "Bignum",
+		description:
+			"A C++ library to handle infinitely (the size of you're RAM) big numbers",
+		repoLink: "https://github.com/defaultmodel/bignum",
+		tags: ["C++", "Library"],
+	},
+	{
+		name: "Muscles",
+		description: "A server & TUI client for simple terminal remote control",
+		repoLink: "https://gitlab.istic.univ-rennes1.fr/hmeyran/muscles",
+		tags: ["Rust", "Client", "Server"],
+	},
+	{
+		name: "Takuzu solver",
+		description: "A C-written Takuzu Solver",
+		repoLink: "https://github.com/defaultmodel/takuzu",
+		tags: ["C", "Heuristics"],
+	},
+];
