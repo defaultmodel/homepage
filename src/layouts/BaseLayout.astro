@@ -21,21 +21,5 @@ const { title, description, image } = Astro.props;
 			<slot />
 		</div>
 		<Footer />
-		<!-- Google tag (gtag.js) -->
-    {
-      GTAG_MEASUREMENT_ID &&
-      <>
-        <script type='text/partytown' async src={'https://www.googletagmanager.com/gtag/js?id=' + GTAG_MEASUREMENT_ID}></script>
-        <script type='text/partytown' define:vars={{ GTAG_MEASUREMENT_ID }}>
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag('js', new Date());
-
-          gtag('config', GTAG_MEASUREMENT_ID);
-        </script>
-      </>
-    }
 	</body>
 </html>
