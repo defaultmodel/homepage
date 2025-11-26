@@ -35,8 +35,8 @@ const { Content, headings } = await render(post);
 			<article>
 				<Prose>
 					<div>
-						<h1 class='!my-1 leading-tight'>{title}</h1>
-            <div class='text-sm font-[500] mt-2 sm:mt-0 py-1 md:text-right flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center'>
+						<h1 class='my-1! leading-tight'>{title}</h1>
+            <div class='text-sm font-medium mt-2 sm:mt-0 py-1 md:text-right flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center'>
               {
                 <div class='flex gap-2'>
                   {
@@ -111,13 +111,13 @@ const { Content, headings } = await render(post);
 			// highlight the last scrolled-to: set everything inactive first
 			for (const link of links) {
 				link.classList.add('border-transparent', 'text-inherit');
-				link.classList.remove('bg-[var(--background-surface-color)]', 'border-[var(--soft-border-color)]', 'text-[var(--link-color)]');
+				link.classList.remove('bg-(--background-surface-color)', 'border-(--soft-border-color)', 'text-(--link-color)');
 			}
 			// then iterate backwards, on the first match highlight it and break
 			for (var i = anchors.length - 1; i >= 0; i--) {
 				if (scrollTop > anchors[i].offsetTop - 80) {
 					links[i].classList.remove('border-transparent', 'text-inherit');
-					links[i].classList.add('bg-[var(--background-surface-color)]', 'border-[var(--soft-border-color)]', 'text-[var(--link-color)]');
+					links[i].classList.add('bg-(--background-surface-color)', 'border-(--soft-border-color)', 'text-(--link-color)');
 					break;
 				}
 			}
