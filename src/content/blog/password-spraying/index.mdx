@@ -80,7 +80,7 @@ Les PSO (Password Settings Objects) permettent d'appliquer des règles spécifiq
 Elles sont différentes des GPO par bien des aspects mais ce qui nous intéressent, c'est que **en tant qu'utilisateur lambda on ne peut pas voir le contenu de la GPO qui s'applique sur nous**.
 
 ```
-ldeep ldap -u $username -p $password -d $domain -s "ldap://$dc" pso
+nxc ldap $ip -u $username -p $password --pso
 ```
 
 La subtilité c'est qu'on peut même savoir si une GPO s'applique sur nous en se fiant à l'attribut LDAP `` de notre utilisateur.
