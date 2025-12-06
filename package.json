@@ -20,10 +20,10 @@
 		"astro": "^5.16.4",
 		"daisyui": "^5.5.8",
 		"markdown-it": "^14.1.0",
-		"sanitize-html": "^2.17.0",
 		"sharp": "^0.33.5",
 		"tailwindcss": "^4.1.17",
 		"typescript": "^5.9.3",
+		"ultrahtml": "^1.6.0",
 		"unist-util-visit": "^5.0.0"
 	},
 	"devDependencies": {
