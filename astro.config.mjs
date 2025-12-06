@@ -9,7 +9,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://devolio.devaradise.com",
+	site: "https://defaultmodel.eu.org",
 	integrations: [mdx(), sitemap(), partytown()],
 
 	markdown: {
