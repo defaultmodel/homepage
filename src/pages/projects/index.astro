@@ -3,17 +3,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectList from '../../components/ProjectList.astro';
 import { projects } from './projects';
 
+const title = 'All My Projects';
+const description = 'A list of my noteworthy projects';
 ---
 
-<BaseLayout
-	title="All My Projects"
-	description="All my project portfolio from real projects to open source projects."
->
-  <div class='container'>
-    <div class="mb-10">
-      <h1 class="text-3xl font-bold mb-2">All My Projects</h1>
-      <p class="text-zinc-700 dark:text-zinc-300 text-lg">All my project portfolio from real projects to open source projects.</p>
-    </div>
-    <ProjectList projects={projects}/>
-  </div>
+<BaseLayout title={`Defaultmodel - ${title}`} description={description}>
+	<div class='container'>
+		<div class='mb-10'>
+			<h1 class='text-3xl font-bold mb-2'>{title}</h1>
+			<p class='text-zinc-700 dark:text-zinc-300 text-lg'>{description}</p>
+		</div>
+		<ProjectList projects={projects} />
+	</div>
 </BaseLayout>

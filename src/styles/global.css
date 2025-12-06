@@ -1,23 +1,86 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* https://github.com/tailwindlabs/tailwindcss/discussions/18207#discussioncomment-13346742 */
-@custom-variant dark (&:where(.dark, .dark *));
-
 @plugin "daisyui" {
-	themes: dark --default;
-	root: ":root";
-	include: ;
-	exclude: ;
-	prefix: ;
-	logs: false;
+	themes: bumblebee --default, halloween --prefersdark;
+}
+
+
+@custom-variant dark (&:where([data-theme=halloween], [data-theme=halloween] *));
+
+@font-face {
+	font-family: 'Atkinson-Hyperlegible';
+	src: url('/fonts/AtkinsonHyperlegible-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Atkinson-Hyperlegible';
+	src: url('/fonts/AtkinsonHyperlegible-Bold.ttf');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Atkinson-Hyperlegible';
+	src: url('/fonts/AtkinsonHyperlegible-Italic.ttf');
+	font-weight: normal;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Atkinson-Hyperlegible';
+	src: url('/fonts/AtkinsonHyperlegible-BoldItalic.ttf');
+	font-weight: bold;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Atkinson-Hyperlegible-Mono';
+	src: url('/fonts/AtkinsonHyperlegibleMonoVF-Variable.ttf');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 
 @layer base {
 
+	html {
+		font-family: "Atkinson-Hyperlegible", serif;
+	}
+
+	h1::before {
+		content: "# ";
+	}
+
+	h2::before {
+		content: "## ";
+	}
+
+	h3::before {
+		content: "### ";
+	}
+
+	h4::before {
+		content: "#### ";
+	}
+
+	h5::before {
+		content: "##### ";
+	}
+
+	h6::before {
+		content: "###### ";
+	}
+
 	pre,
 	code {
-		font-size: 0.875rem;
+		font-family: "Atkinson-Hyperlegible-Mono", monospace;
 	}
 }
 
