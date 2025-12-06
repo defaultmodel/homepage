@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* https://github.com/tailwindlabs/tailwindcss/discussions/18207#discussioncomment-13346742 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@plugin "daisyui" {
+	themes: dark --default;
+	root: ":root";
+	include: ;
+	exclude: ;
+	prefix: ;
+	logs: false;
+}
+
 @layer base {
 
 	pre,
