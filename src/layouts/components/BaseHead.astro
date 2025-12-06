@@ -21,6 +21,9 @@ const { title, description, image = '/ava.avif' } = Astro.props;
 <link rel='icon' href={Favicon.src} />
 <meta name='generator' content={Astro.generator} />
 
+<!-- RSS -->
+<link rel='alternate' type='application/rss+xml' title={title} href={new URL('rss.xml', Astro.site)} />
+
 <!-- Canonical URL -->
 <link rel='canonical' href={canonicalURL} />
 
