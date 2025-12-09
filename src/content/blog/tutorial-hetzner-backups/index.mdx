@@ -80,7 +80,7 @@ pipx install borgmatic
 
 ## Configuring borgmatic
 
-Borgmatic work via a configuration file, we can use this utility to generate a default configuration file that we can start from :
+Borgmatic works via a configuration file, we can use this utility to generate a default configuration file that we can start from :
 
 ```bash
 borgmatic config generate # Generating a configuration file at: /etc/borgmatic/config.yaml
@@ -140,7 +140,7 @@ systemd-ask-password -n | systemd-creds encrypt - /etc/credstore.encrypted/borgm
 
 To prevent the logs from growing to big we need rotate them, meaning we keep only the recent logs, compress the old ones and remove the very old ones.
 
-Logrotate is pretty the standard for such a use case :
+Logrotate is pretty much the standard for such a use case :
 ```bash
 apt install logrotate
 ```
@@ -174,14 +174,14 @@ borgmatic repo-create --encryption repokey-blake2
 > 3. The repository encryption passphrase
 > 4. \+ The repository decryption key
 
-We can test that our setup by making our first backup manually :
+We can test that our setup works by making our first backup manually :
 ```
 borgmatic create
 ```
 
 ## Automating the backups
 Borgmatic is configured, but not automated yet. Borgmatic can be automatically started via a systemd service.
-And they already provides the necessary files to do so, we can download them and put them in `/etc/systemd/system` so that systemd can find them.
+And they already provide the necessary files to do so, we can download them and put them in `/etc/systemd/system` so that systemd can find them.
 ```
 curl https://projects.torsion.org/borgmatic-collective/borgmatic/raw/branch/main/sample/systemd/borgmatic.service | sudo tee /etc/systemd/system/borgmatic.service
 curl https://projects.torsion.org/borgmatic-collective/borgmatic/raw/branch/main/sample/systemd/borgmatic.timer | sudo tee /etc/systemd/system/borgmatic.timer
@@ -199,7 +199,7 @@ sudo systemctl enable --now borgmatic.timer
 ## How does the repository work
 
 When the repository is created (`borgmatic repo-create --encryption repokey-blake2`) an decryption key is created, let's call it "*Master Key*".
-This *Master Key* is then encrypted with our [`encryption_passphrase`](<index#Create the passphrase secret>), so that if anyone as access to our repository, they won't be able to decrypt the actual content.
+This *Master Key* is then encrypted with our [`encryption_passphrase`](<index#Create the passphrase secret>), so that if anyone has access to our repository, they won't be able to decrypt the actual content.
 
 ![](first-mermaid.png)
 
@@ -207,7 +207,7 @@ So, on each backup we make the process is as follows :
 
 ![](second-mermaid.png)
 
-# Last words
+# Final words
 
 > As with any article of mine if you see any errors or simply want to talk you are welcome to contact me at at defaultmodel[а𝗍]pm[ԁо𝗍]me
 
