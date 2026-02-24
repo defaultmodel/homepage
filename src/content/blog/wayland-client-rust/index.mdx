@@ -1,0 +1,93 @@
+---
+title: 'Sharing memory with Wayland via Rust'
+seoTitle: 'wayland-client-part-1'
+description: 'A deep-dive into bare-metal wayland'
+tags: ["Rust", "Wayland"]
+pubDate: '02/24/2026'
+# updateDate: '11/26/2025'
+coverImage: './wayland-ancillary-data-meme.jpg'
+---
+
+> The code and guidance given here should not be used as the sole source of information to create production-ready code, also you should not eat tide-pods... raw, fry them first.
+
+For this article I assume basic knowledge about the Wayland protocol, if you want resources those are the best ones at the time of writing [\[1\]](https://wayland-book.com/) [\[2\]](https://wayland.app/protocols/).
+
+Creating and sharing shared memory with the wayland display server in Rust is not as straightforward as it may seem, so we'll go step-by-step.
+In this article, we’ll implement Wayland's wl_shm interface to provide a pixel buffer describing our window content.
+
+First we need to create a memory-mapped file, for this we will use the `tempdir` crate (although it's perfectly fine to implement it yourselves)
+
+```rust
+let folder = tempdir().unwrap();
+let path = folder.path().join("mmap.ff");
+let file = fs::OpenOptions::new()
+    .read(true)
+    .write(true)
+    .create(true)
+    .truncate(true)
+    .open(&path)
+    .unwrap();
+```
+
+We then want to set the filesize to "allocate" our memory :
+```rust
+file.set_len(size as u64).unwrap();
+```
+
+I then create a MmapMut struct with `memmap2` to allow faster writing by **converting our memory-mapped file into a memory-mapped buffer**.
+This allows us not to use std::io functions (notably std::io::BufWriter) as they perform unnecessary write() syscalls and allocate memory even though our file is already in memory.
+
+> The same logic goes for reading via `std::io::BufReader`
+
+Doing this implies **adding unsafe code to our codebase** because Rust cannot guarantee what ends up in our shared memory as everyone can write (given the right unix permissions) in it.
+As far as I know the wayland display server considers this shared memory as a read-only zone, so we shouldn't suffer any undefined behaviour.
+
+> NOTE : I fill this shared memory with an image converted to the ARGB8888 format, one of the two format we know are required to work.
+
+```rust
+let raw_fd = file.as_raw_fd();
+let mut mmap = unsafe { MmapMut::map_mut(&file).unwrap() };
+
+// Filling the shared memory with our image
+// NOTE : image is of type &image::DynamicImage
+let pixels: &mut [u32] =
+    unsafe { std::slice::from_raw_parts_mut(mmap.as_mut_ptr() as *mut u32, size) };
+// RGBA -> ARGB8888 While following the host's endianness
+for (i, chunk) in rgba.chunks_exact(4).enumerate() {
+    let r = chunk[0] as u32;
+    let g = chunk[1] as u32;
+    let b = chunk[2] as u32;
+    let a = chunk[3] as u32;
+    pixels[i] = (a << 24) | (r << 16) | (g << 8) | b;
+}
+```
+
+Everything is ready ; our shared memory was created and filled with an image in ARGB8888 format.
+We just need to share it with wayland... *why do I hear boss music !?*
+
+The keen-eyed may have spotted a problem, how the hell do we send a reference to our shared memory ??
+Well the reason we use memory-mapped **file** is that we can send it's file descriptor, without this we would be sending whole argb8888 buffers across the wayland Unix socket like cavemans.
+We can't just send the file descriptor as-is inside a message, we need to send it as 𝒶𝓃𝒸𝒾𝓁𝓁𝒶𝓇𝓎 𝒹𝒶𝓉𝒶.
+
+> QUESTION : Isn't a file descriptor just an int !? Why can't we send the the file descriptor like any other argument ??\
+> True, but a file descriptor is relative to our process file descriptor table, we need to involve the kernel to "transfer" the file descriptor to another process.\
+> [For more details, see the "Ancillary messages" chapter](https://www.man7.org/linux/man-pages/man7/unix.7.html)
+
+In the faraway lands of C this is done via the [`sendmsg`](https://linux.die.net/man/2/sendmsg) and [`recvmsg`](https://linux.die.net/man/2/recvmsg) functions, although in Rust well...
+At the time of writing (rust v1.9.3) `SocketAncillary` is a [nightly feature](https://doc.rust-lang.org/std/os/unix/net/struct.SocketAncillary.html), thus I can't recommend it in good faith.
+Hence we are obligated to use C bindings, the `nix` crate provides us with safe bindings to select functions of the `libc`, including the [`nix::sys::socket::sendmsg`](https://docs.rs/nix/latest/nix/sys/socket/fn.sendmsg.html) function.
+
+```rust
+let iov = [IoSlice::new(b"")];
+let cmsg = socket::ControlMessage::ScmRights(&[raw_fd]);
+socket::sendmsg::<socket::UnixAddr>(
+    wayland_socket.as_raw_fd(),
+    &iov,
+    &[cmsg],
+    socket::MsgFlags::empty(),
+    None,
+)
+.unwrap();
+```
+
+To recap, what we have done is creating a memory-mapped file (and using it as memory-mapped buffer for optimization) and sent the corresponding file descriptor via ancillary data via the Unix socket used for communication with the wayland display server.
