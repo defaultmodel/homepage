@@ -41,8 +41,7 @@ const { Content, headings } = await render(post);
                           text-sm text-zinc-700 dark:text-zinc-300 no-underline px-2 py-0.5
                           transition-all duration-700
                         hover:border-zinc-700 dark:hover:border-zinc-300'
-												href={`/tags/${slugify(tag)}`}
-											>
+												href={`/tags/${slugify(tag)}`}>
 												{tag}
 											</a>
 										))}
@@ -71,7 +70,7 @@ const { Content, headings } = await render(post);
 						</div>
 					</div>
 					<div class='py-3 overflow-hidden'>
-						{coverImage && <Image class='rounded-3xl w-full m-0 lg:mb-2' src={coverImage} alt={title} loading='eager' />}
+						{coverImage && <Image class='max-w-full max-h-[60vh] mx-auto my-0 lg:mb-2 object-contain' src={coverImage} alt={title} loading='eager' />}
 					</div>
 					<Content />
 				</Prose>
